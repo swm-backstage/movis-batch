@@ -31,6 +31,7 @@ def lambda_handler(event, context):
     JOIN event e ON em.event_id = e.ulid
     JOIN club c ON e.club_id = c.ulid
     WHERE em.is_paid = FALSE
+    AND (e.payment_deadline <= CURDATE() OR e.payment_deadline BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 7 DAY))
     """
     cursor.execute(query)
     unpaid_members = cursor.fetchall()
